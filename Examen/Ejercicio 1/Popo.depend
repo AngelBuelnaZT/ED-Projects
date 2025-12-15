@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1759533198 source:c:\users\fim-cc3\downloads\popo\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+

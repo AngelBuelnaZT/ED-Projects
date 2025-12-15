@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatito Kawaii</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        #tablero {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px;
+        }
+        .casilla {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            cursor: pointer;
+        }
+        .casilla:hover {
+            background-color: #e0e0e0;
+        }
+        #mensaje {
+            font-size: 24px;
+            margin: 20px;
+        }
+        #boton-revancha {
+            display: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #boton-revancha:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="mensaje">Turno del jugador 1 (X)</div>
+    <div id="tablero"></div>
+    <button id="boton-revancha" onclick="iniciarJuego()">Jugar de nuevo</button>
+
+    <script>
+        class GatitoMejorado {
+            constructor() {
+                this.tablero = Array(3).fill().map(() => Array(3).fill('-'));
+                this.jugadorActual = 'X';
+                this.juegoTerminado = false;
+                this.movimientos = 0;
+                this.mensaje = document.getElementById('mensaje');
+                this.tableroElement = document.getElementById('tablero');
+                this.botonRevancha = document.getElementById('boton-revancha');
+                this.inicializarTablero();
+            }
+
+            inicializarTablero() {
+                this.tableroElement.innerHTML = '';
+                this.tablero.forEach((fila, i) => {
+                    fila.forEach((_, j) => {
+                        const casilla = document.createElement('div');
+                        casilla.className = 'casilla';
+                        casilla.dataset.fila = i;
+                        casilla.dataset.columna = j;
+                        casilla.addEventListener('click', () => this.realizarMovimiento(i, j));
+                        this.tableroElement.appendChild(casilla);
+                    });
+                });
+            }
+
+            realizarMovimiento(fila, columna) {
+                if (this.juegoTerminado || this.tablero[fila][columna] !== '-') return;
+
+                this.tablero[fila][columna] = this.jugadorActual;
+                this.tableroElement.children[fila * 3 + columna].textContent = this.jugadorActual;
+                this.movimientos++;
+
+                if (this.verificarEstadoJuego()) return;
+
+                this.jugadorActual = this.jugadorActual === 'X' ? 'O' : 'X';
+                this.mensaje.textContent = `Turno del jugador ${this.jugadorActual === 'X' ? '1 (X)' : '2 (O)'}`;
+            }
+
+            verificarEstadoJuego() {
+                if (this.hayGanador()) {
+                    this.juegoTerminado = true;
+                    this.mensaje.textContent = `¡Felicidades! El jugador ${this.jugadorActual === 'X' ? '1 (X)' : '2 (O)'} gana!`;
+                    this.mostrarBotonRevancha();
+                    return true;
+                }
+
+                if (this.movimientos === 9) {
+                    this.juegoTerminado = true;
+                    this.mensaje.textContent = '¡Empate! El tablero está lleno sin ganador.';
+                    this.mostrarBotonRevancha();
+                    return true;
+                }
+                return false;
+            }
+
+            hayGanador() {
+                const lineas = [
+                    ...this.tablero, // Filas
+                    ...[0, 1, 2].map(i => this.tablero.map(fila => fila[i])), // Columnas
+                    [this.tablero[0][0], this.tablero[1][1], this.tablero[2][2]], // Diagonal principal
+                    [this.tablero[0][2], this.tablero[1][1], this.tablero[2][0]] // Diagonal secundaria
+                ];
+                return lineas.some(linea => linea.every(casilla => casilla === this.jugadorActual));
+            }
+
+            mostrarBotonRevancha() {
+                this.botonRevancha.style.display = 'block';
+            }
+
+            reiniciar() {
+                this.tablero = Array(3).fill().map(() => Array(3).fill('-'));
+                this.jugadorActual = 'X';
+                this.juegoTerminado = false;
+                this.movimientos = 0;
+                this.mensaje.textContent = 'Turno del jugador 1 (X)';
+                this.botonRevancha.style.display = 'none';
+                this.inicializarTablero();
+            }
+        }
+
+        let juego = new GatitoMejorado();
+
+        function iniciarJuego() {
+            juego.reiniciar();
+        }
+    </script>
+</body>
+</html>

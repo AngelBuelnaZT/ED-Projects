@@ -1,0 +1,15 @@
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\bin\Debug\net9.0\Calaboxos.exe
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\bin\Debug\net9.0\Calaboxos.deps.json
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\bin\Debug\net9.0\Calaboxos.runtimeconfig.json
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\bin\Debug\net9.0\Calaboxos.dll
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\bin\Debug\net9.0\Calaboxos.pdb
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.AssemblyInfoInputs.cache
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.AssemblyInfo.cs
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.csproj.CoreCompileInputs.cache
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.sourcelink.json
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.dll
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\refint\Calaboxos.dll
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.pdb
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\Calaboxos.genruntimeconfig.cache
+C:\Users\respa\OneDrive\Documentos\GitHub\Trabajos-ED\Mini projects\Calaboxos\obj\Debug\net9.0\ref\Calaboxos.dll

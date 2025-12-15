@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conecta Cuatro</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 2px solid black;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #restart {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Conecta Cuatro</h1>
+    <canvas id="gameCanvas" width="560" height="560"></canvas>
+    <div id="message">Turno del Jugador 1 (Rojo)</div>
+    <button id="restart" onclick="restartGame()">Reiniciar Juego</button>
+    <script>
+        class ConnectFour {
+            constructor() {
+                this.rows = 6;
+                this.cols = 7;
+                this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+                this.currentPlayer = 1;
+                this.gameOver = false;
+                this.lastMove = null;
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.cellSize = 80;
+                this.message = document.getElementById('message');
+                this.canvas.addEventListener('click', e => this.handleClick(e));
+                this.render();
+            }
+
+            render() {
+                const { ctx, cellSize, rows, cols, board } = this;
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                for (let col = 0; col < cols; col++) {
+                    ctx.fillStyle = 'gray';
+                    ctx.fillRect(col * cellSize, 0, cellSize, cellSize);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(col + 1, col * cellSize + cellSize / 2, 30);
+                }
+
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        ctx.fillStyle = board[row][col] === 1 ? 'red' : board[row][col] === 2 ? 'yellow' : 'white';
+                        ctx.beginPath();
+                        ctx.arc(col * cellSize + cellSize / 2, (row + 1) * cellSize + cellSize / 2, 
+                                cellSize / 2 - 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            makeMove(col) {
+                if (this.gameOver || col < 0 || col >= this.cols || this.board[0][col] !== 0) {
+                    this.message.textContent = `¡Movimiento inválido! Prueba otra columna. Turno del Jugador ${this.currentPlayer}`;
+                    return false;
+                }
+                for (let row = this.rows - 1; row >= 0; row--) {
+                    if (this.board[row][col] === 0) {
+                        this.board[row][col] = this.currentPlayer;
+                        this.lastMove = { row, col };
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            checkWinner() {
+                if (!this.lastMove) return false;
+                const { row, col } = this.lastMove;
+                const player = this.currentPlayer;
+                const directions = [
+                    [0, 1], [1, 0], [1, 1], [1, -1] // Horizontal, Vertical, Diagonal \, Diagonal /
+                ];
+
+                for (const [dr, dc] of directions) {
+                    let count = 1;
+                    for (let i = 1; i <= 3; i++) {
+                        const r = row + dr * i, c = col + dc * i;
+                        if (r < 0 || r >= this.rows || c < 0 || c >= this.cols || this.board[r][c] !== player) break;
+                        count++;
+                    }
+                    for (let i = 1; i <= 3; i++) {
+                        const r = row - dr * i, c = col - dc * i;
+                        if (r < 0 || r >= this.rows || c < 0 || c >= this.cols || this.board[r][c] !== player) break;
+                        count++;
+                    }
+                    if (count >= 4) return true;
+                }
+                return false;
+            }
+
+            isBoardFull() {
+                return this.board[0].every(cell => cell !== 0);
+            }
+
+            switchPlayer() {
+                this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+                this.message.textContent = `Turno del Jugador ${this.currentPlayer} (${this.currentPlayer === 1 ? 'Rojo' : 'Amarillo'})`;
+            }
+
+            handleClick(event) {
+                if (this.gameOver) return;
+                const rect = this.canvas.getBoundingClientRect();
+                const col = Math.floor((event.clientX - rect.left) / this.cellSize);
+                if (this.makeMove(col)) {
+                    this.render();
+                    if (this.checkWinner()) {
+                        this.message.textContent = `¡Jugador ${this.currentPlayer} (${this.currentPlayer === 1 ? 'Rojo' : 'Amarillo'}) Gana!`;
+                        this.gameOver = true;
+                    } else if (this.isBoardFull()) {
+                        this.message.textContent = '¡Juego Terminado: Empate!';
+                        this.gameOver = true;
+                    } else {
+                        this.switchPlayer();
+                    }
+                }
+            }
+
+            reset() {
+                this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+                this.currentPlayer = 1;
+                this.gameOver = false;
+                this.lastMove = null;
+                this.message.textContent = `Turno del Jugador 1 (Rojo)`;
+                this.render();
+            }
+        }
+
+        const game = new ConnectFour();
+        function restartGame() {
+            game.reset();
+        }
+    </script>
+</body>
+</html>
